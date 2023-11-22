@@ -7,7 +7,21 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 # يمكن تغيير هذا الأمر بناءً على نظام التشغيل المستخدم
 sudo apt-get install -y nodejs
 
-# تنصيب Go
-wget https://dl.google.com/go/go1.16.linux-amd64.tar.gz
-tar -C /usr/local -xzf go1.16.linux-amd64.tar.gz
-export PATH=$PATH:/usr/local/go/bin
+# تحديد نسخة Go
+GOVERS=1.21.4
+
+# إنشاء الدلائل اللازمة
+mkdir -p \
+    $HOME/.local/go/$GOVERS \
+    $HOME/go
+
+echo "::: تثبيت Go ${GOVERS}..."
+curl -O -L https://golang.org/dl/go${GOVERS}.linux-amd64.tar.gz
+tar -C $HOME/.local/go/$GOVERS -zxf go${GOVERS}.linux-amd64.tar.gz
+/bin/rm go${GOVERS}.linux-amd64.tar.gz
+
+# تعيين المتغيرات البيئية لـ Go
+export GOROOT=$HOME/.local/go/$GOVERS/go
+export GOPATH=$HOME/go
+export GO111MODULE=on
+export PATH=$GOPATH/bin:$GOROOT/bin:$PATH

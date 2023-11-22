@@ -1,13 +1,12 @@
 #!/bin/bash
 
-# تنصيب Rust
+# تثبيت Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source $HOME/.cargo/env
 
-# تنصيب Node.js
-# يمكن تغيير هذا الأمر بناءً على نظام التشغيل المستخدم
+# تثبيت Node.js
+curl -sL https://deb.nodesource.com/setup_16.x | bash -
 apt-get install -y nodejs
-
-#!/bin/bash
 
 set -e
 

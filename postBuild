@@ -2,11 +2,7 @@
 
 # تثبيت Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-source $HOME/.cargo/env
-
-# تثبيت Node.js
-curl -sL https://deb.nodesource.com/setup_16.x | bash -
-apt-get install -y nodejs
+export PATH="$HOME/.cargo/bin:$PATH"
 
 set -e
 

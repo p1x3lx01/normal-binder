@@ -5,7 +5,11 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 # تنصيب Node.js
 # يمكن تغيير هذا الأمر بناءً على نظام التشغيل المستخدم
-sudo apt-get install -y nodejs
+apt-get install -y nodejs
+
+#!/bin/bash
+
+set -e
 
 # تحديد نسخة Go
 GOVERS=1.21.4
@@ -25,3 +29,45 @@ export GOROOT=$HOME/.local/go/$GOVERS/go
 export GOPATH=$HOME/go
 export GO111MODULE=on
 export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+
+# تثبيت حزم Go
+echo "::: تثبيت gophernotes و gonum..."
+go install github.com/gopherdata/gophernotes@latest
+
+echo "::: تثبيت gophernotes و gonum... [تم]"
+
+# إعداد البيئة لـ Go
+cat >> $HOME/.setup-go << EOF
+## إعداد Go
+export GOROOT=$GOROOT
+export GOPATH=$GOPATH
+export GO111MODULE=on
+export PATH=\$GOPATH/bin:\$GOROOT/bin:\$PATH
+EOF
+
+cat >> $HOME/.bashrc << EOF
+. ~/.setup-go
+EOF
+
+# تثبيت نواة Go لـ Jupyter
+mkdir -p ./binder/gophernotes
+cat >| ./binder/gophernotes/kernel.json << EOF
+{
+    "argv": [
+        "$GOPATH/bin/gophernotes",
+        "{connection_file}"
+    ],
+    "display_name": "Go",
+    "language": "go",
+    "name": "go",
+    "env": {
+        "GOPATH": "$GOPATH",
+        "GOROOT": "$GOROOT",
+        "GO111MODULE": "on",
+        "PATH":   "$GOPATH/bin:$GOROOT/bin:$PATH"
+    }
+}
+EOF
+jupyter kernelspec install ./binder/gophernotes --user
+
+/bin/rm -rf binder

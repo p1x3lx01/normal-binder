@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# تنصيب Rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# تنصيب Node.js
+# يمكن تغيير هذا الأمر بناءً على نظام التشغيل المستخدم
+sudo apt-get install -y nodejs
+
+# تنصيب Go
+wget https://dl.google.com/go/go1.16.linux-amd64.tar.gz
+sudo tar -C /usr/local -xzf go1.16.linux-amd64.tar.gz
+export PATH=$PATH:/usr/local/go/bin
